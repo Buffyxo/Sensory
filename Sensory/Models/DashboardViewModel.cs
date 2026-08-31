@@ -13,4 +13,6 @@ public class DashboardViewModel
     public int OnlineDevices { get; set; }
 
     public int AlertCount => Alerts.Count;
+
+    public string EnvironmentName { get; set; } = string.Empty;
 }

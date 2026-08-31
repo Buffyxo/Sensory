@@ -20,6 +20,7 @@ namespace Sensory
             builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             builder.Services.AddControllersWithViews();
+            builder.Services.AddHealthChecks();
 
             builder.Services.AddScoped<IDeviceService, DeviceService>();
             builder.Services.AddScoped<IEnvironmentService, EnvironmentService>();
@@ -44,6 +45,7 @@ namespace Sensory
             app.UseAuthorization();
 
             app.MapStaticAssets();
+            app.MapHealthChecks("/health");
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}")
