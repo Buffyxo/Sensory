@@ -1,8 +1,115 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model Sensory.Models.DashboardViewModel
+
+@{
+    ViewData["Title"] = "Dashboard";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="sensory-dashboard">
+
+    <header class="sensory-header">
+        <h1>Sensory</h1>
+        <p>Smart home monitoring and device management</p>
+    </header>
+
+    <div class="summary-grid">
+        <div class="summary-card">
+            <p>Devices</p>
+            <h2>@Model.TotalDevices</h2>
+        </div>
+
+        <div class="summary-card">
+            <p>Online</p>
+            <h2>@Model.OnlineDevices</h2>
+        </div>
+
+        <div class="summary-card">
+            <p>Alerts</p>
+            <h2>@Model.AlertCount</h2>
+        </div>
+    </div>
+
+    <div class="devices-section">
+
+        <div class="section-header">
+            <div>
+                <h2>Devices</h2>
+                <p>Manage your connected devices</p>
+            </div>
+        </div>
+
+        <div class="device-grid">
+
+            @foreach (var device in Model.Devices)
+            {
+                <partial name="_DeviceCard" model="device" />
+            }
+
+        </div>
+
+    </div>
+
+    <div class="row g-4 mt-2">
+
+        <div class="col-lg-6">
+
+            <div class="card shadow-sm">
+                <div class="card-body">
+
+                    <h4 class="mb-3">Environment</h4>
+
+                    <div class="mb-3">
+                        <small class="text-muted">Temperature</small>
+                        <h3>@Model.Environment.Temperature°C</h3>
+                    </div>
+
+                    <div>
+                        <small class="text-muted">Humidity</small>
+                        <h3>@Model.Environment.Humidity%</h3>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-lg-6">
+
+            <div class="card shadow-sm">
+                <div class="card-body">
+
+                    <h4 class="mb-3">Alerts</h4>
+
+                    @if (Model.Alerts.Count == 0)
+                    {
+                        <p class="text-muted mb-0">
+                            No active alerts.
+                        </p>
+                    }
+                    else
+                    {
+                        foreach (var alert in Model.Alerts)
+                        {
+                            <div class="mb-3">
+
+                                <strong>@alert.Severity</strong>
+
+                                <p class="mb-1">
+                                    @alert.Message
+                                </p>
+
+                                <small class="text-muted">
+                                    @alert.Timestamp.ToString("g")
+                                </small>
+
+                            </div>
+                        }
+                    }
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
 </div>

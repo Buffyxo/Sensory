@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Sensory.Data;
+using Sensory.Services;
 
 namespace Sensory
 {
@@ -19,6 +20,9 @@ namespace Sensory
             builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             builder.Services.AddControllersWithViews();
+
+            builder.Services.AddScoped<IDeviceService, DeviceService>();
+            builder.Services.AddScoped<IEnvironmentService, EnvironmentService>();
 
             var app = builder.Build();
 

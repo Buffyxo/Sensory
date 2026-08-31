@@ -1,0 +1,62 @@
+﻿@model Sensory.Models.Device
+
+<div class="device-card">
+    <div class="device-card-header">
+        <div>
+            <span class="device-type">@Model.Type</span>
+            <h3>@Model.Name</h3>
+            <p>@Model.Room</p>
+        </div>
+
+        <span class="device-status @(Model.IsOnline ? "online" : "offline")">
+            @(Model.IsOnline ? "Online" : "Offline")
+        </span>
+    </div>
+
+    <div class="device-card-body">
+
+        @if (Model is Sensory.Models.LightBulb lightBulb)
+        {
+            <div class="device-control">
+                <span>
+                    @(lightBulb.IsOn ? "Light On" : "Light Off")
+                </span>
+
+                <span class="device-value">
+                    @lightBulb.Brightness%
+                </span>
+            </div>
+        }
+        else if (Model is Sensory.Models.SmartPlug smartPlug)
+        {
+            <div class="device-control">
+                <span>
+                    @(smartPlug.IsOn ? "Power On" : "Power Off")
+                </span>
+            </div>
+        }
+        else if (Model is Sensory.Models.Sensor sensor)
+        {
+            <div class="sensor-values">
+                <div>
+                    <small>Temperature</small>
+                    <strong>@sensor.Temperature°C</strong>
+                </div>
+
+                <div>
+                    <small>Humidity</small>
+                    <strong>@sensor.Humidity%</strong>
+                </div>
+            </div>
+        }
+        else if (Model is Sensory.Models.SecurityCamera camera)
+        {
+            <div class="device-control">
+                <span>
+                    @(camera.IsRecording ? "Recording" : "Not recording")
+                </span>
+            </div>
+        }
+
+    </div>
+</div>

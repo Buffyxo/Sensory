@@ -1,25 +1,38 @@
 using Microsoft.AspNetCore.Mvc;
 using Sensory.Models;
-using System.Diagnostics;
+using Sensory.Services;
 
-namespace Sensory.Controllers
+namespace Sensory.Controllers;
+
+public class HomeController : Controller
 {
-    public class HomeController : Controller
+    private readonly IDeviceService _deviceService;
+    private readonly IEnvironmentService _environmentService;
+
+    public HomeController(
+        IDeviceService deviceService,
+        IEnvironmentService environmentService)
     {
-        public IActionResult Index()
-        {
-            return View();
-        }
+        _deviceService = deviceService;
+        _environmentService = environmentService;
+    }
 
-        public IActionResult Privacy()
+    public IActionResult Index()
+    {
+        var viewModel = new DashboardViewModel
         {
-            return View();
-        }
+            Devices = _deviceService.GetDevices(),
+            Alerts = _deviceService.GetActiveAlerts(),
+            Environment = _environmentService.GetLatestReading(),
+            TotalDevices = _deviceService.GetTotalDeviceCount(),
+            OnlineDevices = _deviceService.GetOnlineDeviceCount()
+        };
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
+        return View(viewModel);
+    }
+
+    public IActionResult Privacy()
+    {
+        return View();
     }
 }
